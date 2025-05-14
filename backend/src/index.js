@@ -1,20 +1,28 @@
 const express = require('express');
-const passport = require('passport');
 const session = require('express-session');
-require('./passport');
+const passport = require('passport');
+const cors = require('cors');
+require('dotenv').config();
+require('./config/passport');
+const AuthUser = require('./routes/Auth.model');
 
 const app = express();
 
-app.use(session({ secret: "your_secret", resave: false, saveUninitialized: true }));
+app.use(cors({
+  origin: process.env.CLIENT_URL,
+  credentials: true
+}));
+
+app.use(session({
+  secret: process.env.JWT_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Facebook auth routes
-app.get('/auth/facebook',
-  passport.authenticate('facebook'));
+app.use('/api/auth', AuthUser);
 
-app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
-  (req, res) => {
-    res.redirect('http://localhost:3000/dashboard');
-  });
+const PORT = process.env.PORT || 5001;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -1,4 +1,8 @@
-exporss.LogoutUser = (req, res)=>{
-    res.clearCookie('FacebookToken');
-    res.status(200).json({ message: 'Logout successful' });
-}
+exports.logoutUser = (req, res) => {
+        res.clearCookie('GithubToken', {
+            httpOnly: false,
+            secure: true, 
+            sameSite: 'Lax',
+          });
+        res.redirect(process.env.CLIENT_URL);
+};
