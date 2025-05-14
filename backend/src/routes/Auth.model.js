@@ -17,7 +17,7 @@ router.get('/auth/facebook/callback',
     res.cookie('FacebookToken', req.user.token, {
       httpOnly: true,
       secure: false, 
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
+      maxAge: 24 * 60 * 60 * 1000, 
     });
 
     res.redirect('http://localhost:3000/dashboard');
