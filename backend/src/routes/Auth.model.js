@@ -7,11 +7,11 @@ const cookieParser = require('cookie-parser');
 const { logoutUser } = require('../controllers/auth.controller');
 const router = express.Router();
 
-router.get('/auth/facebook',
+router.get('/facebook',
   passport.authenticate('facebook', { scope: ['email'] })
 );
 
-router.get('/auth/facebook/callback',
+router.get('/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: '/' }),
   (req, res) => {
     res.cookie('FacebookToken', req.user.token, {
@@ -20,7 +20,7 @@ router.get('/auth/facebook/callback',
       maxAge: 24 * 60 * 60 * 1000, 
     });
 
-    res.redirect('http://localhost:3000/dashboard');
+    res.redirect('http://localhost:5173/dashboard');
   }
 );
 
