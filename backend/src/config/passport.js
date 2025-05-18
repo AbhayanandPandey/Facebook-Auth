@@ -18,13 +18,13 @@ passport.use(new FacebookStrategy(
         image: profile.photos?.[0]?.value || null,
         token: accessToken,
       };
-
       return done(null, user);
     } catch (err) {
       done(err, null);
     }
   }
 ));
+
 passport.serializeUser((user, done) => {
   done(null, user);
 });
