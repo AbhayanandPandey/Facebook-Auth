@@ -10,23 +10,20 @@ router.get('/facebook',
 router.get('/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: '/' }),
   (req, res) => {
-    res.cookie('FaceBookToken', req.user.token, {
-      httpOnly: true,
-      secure: false,
+    const { name, email, image, token } = req.user;
+
+    res.cookie('FaceBookToken', token, {
+      httpOnly: false,
+      secure: false, 
       maxAge: 24 * 60 * 60 * 1000,
     });
 
-    res.redirect(`${process.env.CLIENT_URL}/dashboard`);
+    const redirectURL = `${process.env.CLIENT_URL}/dashboard?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&image=${encodeURIComponent(image)}`;
+
+    res.redirect(redirectURL);
   }
 );
 
-router.get('/user', (req, res) => {
-  if (req.isAuthenticated()) {
-    res.json(req.user);
-  } else {
-    res.status(401).json({ message: 'Not authenticated' });
-  }
-});
 
 router.get('/logout', logoutUser);
 
